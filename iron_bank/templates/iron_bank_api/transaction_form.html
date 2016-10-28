@@ -7,11 +7,18 @@
 
 {% csrf_token %}
 {{ form.as_p }}
+
 <input type="submit" name="" value="Submit">
 </form>
 
-{% for x in transaction_list %}
-  {{ x.balance }}
+
+
+{% for transaction in transaction_list %}
+  {{ transaction.amount|floatformat:2 }}
+  {{ transaction.get_process_type_display }}
+  <br>
 {% endfor %}
+<br>
+{{ request.user.profile.balance|floatformat:2 }}
 
 {% endblock %}
