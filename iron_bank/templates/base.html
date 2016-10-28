@@ -5,12 +5,13 @@
     <title>Iron Bank</title>
   </head>
   <body>
+  <a href="{% url 'user_create_view' %}">Create User</a>
     {% if not request.user.is_authenticated %}
         <a href="{% url 'login' %}">
           Login
         </a>
         {% else %}
-        <a href="{% url 'logout' %}?next={% url 'index_create_view' %}">
+        <a href="{% url 'logout' %}?next={% url 'index_view' %}">
           Logout
         </a>
     {% endif %}

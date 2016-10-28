@@ -37,5 +37,3 @@ class Profile(models.Model):
             else:
                 deposit += transaction.amount
         return round(deposit - withdraw, 2)
-
-# no balance stored, instead, return total of all transactions
