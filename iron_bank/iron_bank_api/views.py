@@ -3,7 +3,7 @@ from iron_bank_api.models import Transaction, Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.forms import User
 from django.urls import reverse_lazy
 
@@ -40,6 +40,9 @@ class TransactionCreateView(CreateView):
 
 
 class TransactionListCreateAPIView(ListCreateAPIView):
+    def get_queryset(self):
+        return Transaction.objects.filter(account=self.request.user)
+
+
+class TransactionDetailAPIView(RetrieveAPIView):
     pass
-    # def get_queryset(self):
-    #     return Transaction.objects.filter(account=self.request.user)

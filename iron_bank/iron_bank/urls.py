@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
-from iron_bank_api.views import IndexView, TransactionListCreateAPIView, UserCreateView, TransactionCreateView
+from iron_bank_api.views import IndexView, UserCreateView, TransactionCreateView, TransactionListCreateAPIView, TransactionDetailAPIView
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^$', IndexView, name="index_view"),
     url(r'^transactions/$', TransactionCreateView.as_view(), name="transaction_create_view"),
     url(r'^transaction/$', TransactionListCreateAPIView.as_view(), name="transaction_list_create_api_view"),
+    url(r'^transaction/$', TransactionDetailAPIView.as_view(), name="transaction_detail_api_view"),
 ]
