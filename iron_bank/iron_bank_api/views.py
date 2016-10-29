@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from iron_bank_api.models import Transaction, Profile
+from iron_bank_api.serializers import TransactionSerializer
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.forms import User
 from django.urls import reverse_lazy
+from iron_bank_api.permissions import IsAccountOnly
 
 
 class UserCreateView(CreateView):
@@ -35,14 +37,19 @@ class TransactionCreateView(CreateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.account = self.request.user
-
+        # add logic here to prevent negative balance.
         return super().form_valid(form)
 
 
 class TransactionListCreateAPIView(ListCreateAPIView):
+    permission_classes = (IsAccountOnly,)
+    serializer_class = TransactionSerializer
     def get_queryset(self):
         return Transaction.objects.filter(account=self.request.user)
 
 
 class TransactionDetailAPIView(RetrieveAPIView):
-    pass
+    permission_classes = (IsAccountOnly,)
+    serializer_class = TransactionSerializer
+    def get_queryset(self):
+        return Transaction.objects.filter(account=self.request.user)

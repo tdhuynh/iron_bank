@@ -11,7 +11,7 @@ class Transaction(models.Model):
     account = models.ForeignKey('auth.User')
     amount = models.FloatField(default=0)
     process_type = models.CharField(max_length=1, choices=PROCESS_TYPE)
-    created_by = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 
