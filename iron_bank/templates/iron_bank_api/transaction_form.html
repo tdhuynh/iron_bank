@@ -4,7 +4,7 @@
 
 {% if request.user.is_authenticated %}
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-body">
@@ -24,28 +24,33 @@
       </div>
     </div>
   </div>
-
-  <div class="col-md-8">
-    <table class="table table-hover table-condensed">
-      <tr>
-        <th>Amount</th>
-        <th>Deposit/Withdrawal</th>
-        <th>Date</th>
-      </tr>
-      {% for transaction in transaction_list %}
-      <tr>
-        <td>${{ transaction.amount|floatformat:2 }}</td>
-        <td>{{ transaction.get_process_type_display }}</td>
-        <td>{{ transaction.created }}</td>
-      </tr>
-    {% endfor %}
-    </table>
+  <div class="col-md-1">
   </div>
-
-</div>
-
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <table class="table table-hover table-condensed">
+          <tr>
+            <th>Amount</th>
+            <th>Deposit/Withdrawal</th>
+            <th>Date</th>
+          </tr>
+          {% for transaction in transaction_list %}
+          <tr>
+            <td>${{ transaction.amount|floatformat:2 }}</td>
+            <td>{{ transaction.get_process_type_display }}</td>
+            <td>{{ transaction.created }}</td>
+          </tr>
+        {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
   {% else %}
     <h1>Log in to continue banking</h1>
-
+</div>
 {% endif %}
+
+
+
 {% endblock %}
