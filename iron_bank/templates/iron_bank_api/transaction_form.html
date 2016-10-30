@@ -3,23 +3,46 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-  Hello, {{ request.user }}
-  <form class="" action="" method="post">
+<div class="row">
+  <div class="col-md-4">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <form class="" action="" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" class="btn btn-default" value="Submit">
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h1>Balance: ${{ request.user.profile.balance|floatformat:2 }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  {% csrf_token %}
-  {{ form.as_p }}
-
-  <input type="submit" name="" value="Submit">
-  </form>
-
-    {% for transaction in transaction_list %}
-      {{ transaction.amount|floatformat:2 }}
-      {{ transaction.get_process_type_display }}
-      {{ transaction.account }}
-      <br>
+  <div class="col-md-8">
+    <table class="table table-hover table-condensed">
+      <tr>
+        <th>Amount</th>
+        <th>Deposit/Withdrawal</th>
+        <th>Date</th>
+      </tr>
+      {% for transaction in transaction_list %}
+      <tr>
+        <td>${{ transaction.amount|floatformat:2 }}</td>
+        <td>{{ transaction.get_process_type_display }}</td>
+        <td>{{ transaction.created }}</td>
+      </tr>
     {% endfor %}
-    <br>
-    {{ request.user.profile.balance|floatformat:2 }}
+    </table>
+  </div>
+
+</div>
 
   {% else %}
     <h1>Log in to continue banking</h1>

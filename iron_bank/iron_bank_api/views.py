@@ -7,7 +7,7 @@ from django.views.generic import ListView
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.forms import User
 from django.urls import reverse_lazy
-from iron_bank_api.permissions import IsAccountOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserCreateView(CreateView):
@@ -37,19 +37,27 @@ class TransactionCreateView(CreateView):
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.account = self.request.user
-        # add logic here to prevent negative balance.
+        if instance.process_type == "W" and instance.amount > instance.account.profile.balance:
+                return super().form_invalid(form)
         return super().form_valid(form)
 
 
 class TransactionListCreateAPIView(ListCreateAPIView):
-    permission_classes = (IsAccountOnly,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = TransactionSerializer
+
     def get_queryset(self):
         return Transaction.objects.filter(account=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(account=self.request.user)
+        # if serializer.get_field('process_type') == 'W' and serializer.get_field('amount') > self.request.user.profile.balance:
+        #     raise ValidationError('You do not have sufficient funds.')
+        return super().perform_create(serializer)
+
 
 class TransactionDetailAPIView(RetrieveAPIView):
-    permission_classes = (IsAccountOnly,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = TransactionSerializer
     def get_queryset(self):
         return Transaction.objects.filter(account=self.request.user)
