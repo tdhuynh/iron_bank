@@ -51,9 +51,9 @@ class TransactionListCreateAPIView(ListCreateAPIView):
         return Transaction.objects.filter(account=self.request.user)
 
     def perform_create(self, serializer):
-        instance = serializer.save(account=self.request.user)
-        if instance.process_type == "W" and instance.amount > self.request.user.profile.balance:
+        if serializer.Meta.get_field('process_type') == "W" and serializer.Meta.get_field('amount') > self.request.user.profile.balance:
             raise ValidationError("You have insufficient funds.")
+        serializer.save(account=self.request.user)
         return super().perform_create(serializer)
 
 
