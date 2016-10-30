@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^create_user/$', UserCreateView.as_view(), name='user_create_view'),
     url(r'^$', IndexView, name="index_view"),
     url(r'^account_transactions/$', TransactionCreateView.as_view(), name="transaction_create_view"),
-    url(r'^/api/transactions/$', TransactionListCreateAPIView.as_view(), name="transaction_list_create_api_view"),
-    url(r'^/api/transactions/(?P<pk>\d+)/$', TransactionDetailAPIView.as_view(), name="transaction_detail_api_view"),
+    url(r'^api/transactions/$', TransactionListCreateAPIView.as_view(), name="transaction_list_create_api_view"),
+    url(r'^api/transactions/(?P<pk>\d+)/$', TransactionDetailAPIView.as_view(), name="transaction_detail_api_view"),
 ]

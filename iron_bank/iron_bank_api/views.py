@@ -8,6 +8,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from django.contrib.auth.forms import User
 from django.urls import reverse_lazy
 from rest_framework.permissions import IsAuthenticated
+from django.core.exceptions import ValidationError
 
 
 class UserCreateView(CreateView):
@@ -50,10 +51,11 @@ class TransactionListCreateAPIView(ListCreateAPIView):
         return Transaction.objects.filter(account=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(account=self.request.user)
-        # if serializer.get_field('process_type') == 'W' and serializer.get_field('amount') > self.request.user.profile.balance:
-        #     raise ValidationError('You do not have sufficient funds.')
+        instance = serializer.save(account=self.request.user)
+        if instance.process_type == "W" and instance.amount > self.request.user.profile.balance:
+            raise ValidationError("You have insufficient funds.")
         return super().perform_create(serializer)
+
 
 
 class TransactionDetailAPIView(RetrieveAPIView):
