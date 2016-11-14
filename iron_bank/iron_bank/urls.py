@@ -5,6 +5,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^search/', include('haystack.urls')),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^obtain_token/$', obtain_auth_token),
     url(r'^create_user/$', UserCreateView.as_view(), name='user_create_view'),

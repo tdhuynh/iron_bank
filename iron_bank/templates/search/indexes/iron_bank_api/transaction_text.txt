@@ -1,0 +1,3 @@
+{{ object.process_type }}
+{{ object.user.get_full_name }}
+{{ object.amount }}
